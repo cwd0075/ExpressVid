@@ -1,10 +1,23 @@
 'use strict';
 
 var express = require('express');
+var mongoskin = require('mongoskin');
+var bodyParser = require('body-parser');
+
 var app = express();
+app.use(bodyParser());
+
+var db = mongoskin.db('mongodb://@localhost:27017/test', {safe:true});
 
 app.get('/', function(req, res){
 	res.send('Hello, world!');
+});
+
+app.get('/api', function(req, res, next){
+	db.collection('videos').find().toArray(function(err,results) {
+		if (err) return next(err);
+		res.send(results);
+	});
 });
 
 app.listen(3000);

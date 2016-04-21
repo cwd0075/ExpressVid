@@ -13,5 +13,14 @@ describe('express rest api server', function(){
       })
   });
 
+  it('get the default video list', function(done){
+    superagent.get('http://localhost:3000/api')
+      .end(function(e, res){
+        //console.log(res.body)
+        expect(e).to.eql(null);
+        expect(res.body.length).to.be.above(0);
+        done();
+      })
+  });
 
 });

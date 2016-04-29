@@ -3,29 +3,45 @@
 var express = require('express');
 var mongoskin = require('mongoskin');
 var bodyParser = require('body-parser');
+var countries = require('./json/countries.json');
 
 var app = express();
 app.use(bodyParser.json());
 
-var db = mongoskin.db('mongodb://@localhost:27017/test', {safe:true});
+var db = mongoskin.db('mongodb://@localhost:27017/youtube', {safe:true});
 
 app.get('/', function(req, res){
 	res.send('Hello, world!');
 });
 
-app.get('/api', function(req, res){
+app.get('/api/arealist', function(req, res){
+	res.send(countries);
+});
 
-	if (req.query.city == undefined)
+app.get('/api/videos', function(req, res){
+	var area = '';
+	var found = false;
+	area = (req.query.area == undefined) ? 'US' : req.query.area;
+	//check if area is in country list
+	for(var i=0; i<countries.length; i++)
 	{
-		db.collection('videos').find().toArray(function(err,results) {
-			if (err) return next(err);
-			res.send(results);
-		});
+		if (countries[i].code === area)
+		{
+			found = true;
+			break;
+		}
 	}
-	else
-	{
-		res.send(req.query);
-	}
+	//console.log(found);
+	if (!found)	area = 'US';
+	
+	//console.log(area);
+
+	db.collection('vids').find({country: area},{_id:false}).toArray(function(err, results){
+		if (err) return next(err);
+		//console.log(results[0]);
+		res.send(results[0]);
+	});
+	
 });
 
 app.listen(3000);

@@ -1,3 +1,5 @@
+'use strict';
+
 var superagent = require('superagent')
 var expect = require('expect.js')
 
@@ -14,21 +16,40 @@ describe('express rest api server', function(){
   });
 
   it('get the default video list', function(done){
-    superagent.get('http://localhost:3000/api')
+    superagent.get('http://localhost:3000/api/videos')
       .end(function(e, res){
         //console.log(res.body.length)
         expect(e).to.eql(null);
-        expect(res.body.length).to.be.above(0);
+        expect(res.body).to.have.property('country', 'US');
         done();
       })
   });
 
-  it('get the default city video list', function(done){
-    superagent.get('http://localhost:3000/api?city=hk&time=d')
+  it('get the requested country video list', function(done){
+    superagent.get('http://localhost:3000/api/videos?area=HK')
       .end(function(e, res){
         //console.log(res)
         expect(e).to.eql(null);
-        expect(res.body).to.have.property('city', 'hk');
+        expect(res.body).to.have.property('country', 'HK');
+        done();
+      })
+  });
+
+  it('get US video list if country code is incorrect', function(done){
+    superagent.get('http://localhost:3000/api/videos?area=Gog')
+      .end(function(e, res){
+        //console.log(res)
+        expect(e).to.eql(null);
+        expect(res.body).to.have.property('country', 'US');
+        done();
+      })
+  });
+  it('get country list', function(done){
+    superagent.get('http://localhost:3000/api/arealist')
+      .end(function(e, res){
+        //console.log(res)
+        expect(e).to.eql(null);
+        expect(res.body.length).to.be.above(10);
         done();
       })
   });

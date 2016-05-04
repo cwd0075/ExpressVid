@@ -4,8 +4,10 @@ var express = require('express');
 var mongoskin = require('mongoskin');
 var bodyParser = require('body-parser');
 var countries = require('./json/countries.json');
+var cors = require('cors');
 
 var app = express();
+app.use(cors());
 app.use(bodyParser.json());
 
 var db = mongoskin.db('mongodb://@localhost:27017/youtube', {safe:true});

@@ -1,5 +1,9 @@
 'use strict';
 
+//To run in backgroup:
+//nohup node app.js > express.log &
+
+
 var express = require('express');
 var mongoskin = require('mongoskin');
 var bodyParser = require('body-parser');
@@ -20,6 +24,21 @@ app.get('/api/arealist', function(req, res){
 	res.send(countries);
 });
 
+app.get('/api/video', function(req, res){
+	var id = '';
+	
+	id = req.query.id;
+	
+	db.collection('vids').find({"items.id": id},{"_id":0, "items.$":1}).toArray(function(err, results){
+		if (err) return next(err);
+		//console.log(results[0]);
+		res.send(results[0]);
+	});
+	
+});
+
+
+
 app.get('/api/videos', function(req, res){
 	var area = '';
 	var found = false;
@@ -38,7 +57,7 @@ app.get('/api/videos', function(req, res){
 	
 	//console.log(area);
 
-	db.collection('vids').find({country: area},{_id:false}).toArray(function(err, results){
+	db.collection('vids').find({country: area},{_id:false, "items.snippet.description":false, "items.statistics":false}).toArray(function(err, results){
 		if (err) return next(err);
 		//console.log(results[0]);
 		res.send(results[0]);

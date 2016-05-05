@@ -1,8 +1,8 @@
 'use strict';
 
-var superagent = require('superagent')
-var expect = require('expect.js')
-
+var superagent = require('superagent');
+var expect = require('expect.js');
+var id = '';
 describe('express rest api server', function(){
   
   it('renders index page', function(done){
@@ -31,6 +31,17 @@ describe('express rest api server', function(){
         //console.log(res)
         expect(e).to.eql(null);
         expect(res.body).to.have.property('country', 'HK');
+        id = res.body.items[0].id;
+        done();
+      })
+  });
+
+  it('get the video details by query the id', function(done){
+    superagent.get('http://localhost:3000/api/video?id=' + id)
+      .end(function(e, res){
+        //console.log(res.body);
+        expect(e).to.eql(null);
+        expect(res.body.items[0].id).to.be(id);
         done();
       })
   });

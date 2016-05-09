@@ -6,7 +6,7 @@ var id = '';
 describe('express rest api server', function(){
   
   it('renders index page', function(done){
-    superagent.get('http://localhost:3000/')
+    superagent.get('http://localhost:8080/')
       .end(function(e, res){
         //console.log(res.body)
         expect(e).to.eql(null);
@@ -16,7 +16,7 @@ describe('express rest api server', function(){
   });
 
   it('get the default video list', function(done){
-    superagent.get('http://localhost:3000/api/videos')
+    superagent.get('http://localhost:8080/api/videos')
       .end(function(e, res){
         //console.log(res.body.length)
         expect(e).to.eql(null);
@@ -26,7 +26,7 @@ describe('express rest api server', function(){
   });
 
   it('get the requested country video list', function(done){
-    superagent.get('http://localhost:3000/api/videos?area=HK')
+    superagent.get('http://localhost:8080/api/videos?area=HK')
       .end(function(e, res){
         //console.log(res)
         expect(e).to.eql(null);
@@ -37,7 +37,7 @@ describe('express rest api server', function(){
   });
 
   it('get the video details by query the id', function(done){
-    superagent.get('http://localhost:3000/api/video?id=' + id)
+    superagent.get('http://localhost:8080/api/video?id=' + id)
       .end(function(e, res){
         //console.log(res.body);
         expect(e).to.eql(null);
@@ -47,7 +47,7 @@ describe('express rest api server', function(){
   });
 
   it('get US video list if country code is incorrect', function(done){
-    superagent.get('http://localhost:3000/api/videos?area=Gog')
+    superagent.get('http://localhost:8080/api/videos?area=Gog')
       .end(function(e, res){
         //console.log(res)
         expect(e).to.eql(null);
@@ -56,7 +56,7 @@ describe('express rest api server', function(){
       })
   });
   it('get country list', function(done){
-    superagent.get('http://localhost:3000/api/arealist')
+    superagent.get('http://localhost:8080/api/arealist')
       .end(function(e, res){
         //console.log(res)
         expect(e).to.eql(null);
@@ -69,7 +69,7 @@ describe('express rest api server', function(){
 
 
 // it('retrieves an object', function(done){
-//     superagent.get('http://localhost:3000/collections/test/'+id)
+//     superagent.get('http://localhost:8080/collections/test/'+id)
 //       .end(function(e, res){
 //         // console.log(res.body)
 //         expect(e).to.eql(null)
@@ -82,7 +82,7 @@ describe('express rest api server', function(){
 //   })
 
 //   it('retrieves a collection', function(done){
-//     superagent.get('http://localhost:3000/collections/test')
+//     superagent.get('http://localhost:8080/collections/test')
 //       .end(function(e, res){
 //         // console.log(res.body)
 //         expect(e).to.eql(null)
